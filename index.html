@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Flashcards</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 48px;
+      color: #1a2e4a;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #0f2137;
+      letter-spacing: -0.03em;
+    }
+    header p {
+      font-size: 0.82rem;
+      color: #6b8fad;
+      margin-top: 4px;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      width: 100%;
+      max-width: 580px;
+      margin-bottom: 20px;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #6b8fad;
+      margin-bottom: 6px;
+    }
+    .progress-track {
+      height: 7px;
+      background: #dce6f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      border-radius: 99px;
+      transition: width 0.45s ease;
+      width: 0%;
+    }
+
+    /* ── Batch filter ── */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: center;
+      width: 100%;
+      max-width: 580px;
+      margin-bottom: 14px;
+    }
+    .fbtn {
+      padding: 6px 14px;
+      border: 2px solid #dce6f0;
+      background: white;
+      border-radius: 99px;
+      font-size: 0.79rem;
+      font-weight: 600;
+      color: #6b8fad;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .fbtn:hover { border-color: #3b82f6; color: #3b82f6; }
+    .fbtn.on    { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+
+    /* ── Controls row ── */
+    .ctrl-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .ctrl-btn {
+      padding: 7px 15px;
+      border: 2px solid #dce6f0;
+      background: #fff;
+      border-radius: 10px;
+      font-size: 0.79rem;
+      font-weight: 600;
+      color: #6b8fad;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .ctrl-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+
+    /* ── Card scene ── */
+    .card-scene {
+      width: 100%;
+      max-width: 580px;
+      perspective: 1000px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .card-flipper {
+      position: relative;
+      width: 100%;
+      height: 290px;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-flipper.flipped { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 32px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .face-front {
+      background: #fff;
+      border: 2px solid #e4edf7;
+      box-shadow: 0 4px 22px rgba(59,130,246,0.08), 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .face-back {
+      background: linear-gradient(145deg, #eff6ff, #dbeafe);
+      border: 2px solid #bfdbfe;
+      box-shadow: 0 4px 22px rgba(59,130,246,0.13), 0 1px 4px rgba(0,0,0,0.05);
+      transform: rotateY(180deg);
+    }
+
+    /* Batch corner tag */
+    .ctag {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 3px 9px;
+      border-radius: 8px;
+    }
+    .b-beginner     { background: #fef9c3; color: #854d0e; }
+    .b-intermediate { background: #dcfce7; color: #166534; }
+    .b-advanced     { background: #ede9fe; color: #5b21b6; }
+    .b-literary     { background: #fce7f3; color: #9d174d; }
+
+    /* Status corner tag (top-left) */
+    .stag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 8px;
+      display: none;
+    }
+    .s-known    { background: #dcfce7; color: #166534; display: block; }
+    .s-learning { background: #fef9c3; color: #854d0e; display: block; }
+
+    /* Front card content */
+    .front-word {
+      font-size: clamp(2rem, 6.5vw, 3.2rem);
+      font-weight: 800;
+      color: #0f2137;
+      letter-spacing: -0.03em;
+      text-align: center;
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+    .flip-cue {
+      font-size: 0.73rem;
+      color: #93c5fd;
+      letter-spacing: 0.02em;
+    }
+
+    /* Back card content */
+    .back-word {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #60a5fa;
+      margin-bottom: 14px;
+    }
+    .back-def {
+      font-size: clamp(0.98rem, 3.2vw, 1.22rem);
+      font-weight: 500;
+      color: #1e3a5f;
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    /* ── Mark buttons ── */
+    .mark-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      transition: opacity 0.22s, transform 0.22s;
+    }
+    .mark-row.hidden {
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+    }
+    .mbtn {
+      padding: 9px 21px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.16s, color 0.16s;
+    }
+    .mbtn-k { background: #dcfce7; color: #15803d; }
+    .mbtn-k:hover { background: #16a34a; color: #fff; }
+    .mbtn-l { background: #fef9c3; color: #a16207; }
+    .mbtn-l:hover { background: #ca8a04; color: #fff; }
+
+    /* ── Navigation ── */
+    .nav-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid #dce6f0;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #3b82f6;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .card-count {
+      font-size: 0.87rem;
+      font-weight: 700;
+      color: #6b8fad;
+      min-width: 72px;
+      text-align: center;
+    }
+
+    .kb-hint {
+      font-size: 0.71rem;
+      color: #93c5fd;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Summary screen ── */
+    .summary {
+      display: none;
+      width: 100%;
+      max-width: 580px;
+      background: #fff;
+      border: 2px solid #e4edf7;
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: 0 4px 22px rgba(59,130,246,0.08);
+    }
+    .summary.show { display: block; }
+
+    .sum-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f2137;
+    }
+    .sum-sub {
+      font-size: 0.82rem;
+      color: #6b8fad;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+    .sum-score {
+      font-size: 3.8rem;
+      font-weight: 900;
+      color: #3b82f6;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .sum-stats {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .sstat {
+      padding: 14px 18px;
+      border-radius: 14px;
+      min-width: 90px;
+    }
+    .sstat-k { background: #dcfce7; }
+    .sstat-l { background: #fef9c3; }
+    .sstat-n {
+      font-size: 2rem;
+      font-weight: 800;
+      display: block;
+    }
+    .sstat-k .sstat-n { color: #15803d; }
+    .sstat-l .sstat-n { color: #a16207; }
+    .sstat-lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b8fad;
+    }
+    .sum-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .sbtn {
+      padding: 11px 22px;
+      border-radius: 11px;
+      border: none;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sbtn-p { background: #3b82f6; color: #fff; }
+    .sbtn-p:hover { background: #2563eb; }
+    .sbtn-s { background: #f1f5f9; color: #6b8fad; border: 2px solid #dce6f0; }
+    .sbtn-s:hover { background: #e2e8f0; }
+    .sbtn:disabled { opacity: 0.4; cursor: default; }
+
+    /* ── Mobile ── */
+    @media (max-width: 480px) {
+      body { padding: 18px 12px 36px; }
+      header h1 { font-size: 1.45rem; }
+      .card-flipper { height: 240px; }
+      .card-face { padding: 28px 20px; }
+      .fbtn { font-size: 0.74rem; padding: 5px 10px; }
+      .sum-stats { gap: 12px; }
+      .sstat { padding: 12px 14px; min-width: 78px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>English Flashcards</h1>
+  <p>42 vocabulary words &middot; 4 batches</p>
+</header>
+
+<!-- Progress bar -->
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span id="progText">0 of 42 known</span>
+    <span id="progPct">0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progFill"></div>
+  </div>
+</div>
+
+<!-- Batch filter -->
+<div class="filter-row">
+  <button class="fbtn on" onclick="setBatch('all', this)">All Cards</button>
+  <button class="fbtn" onclick="setBatch('beginner', this)">Beginner</button>
+  <button class="fbtn" onclick="setBatch('intermediate', this)">Intermediate</button>
+  <button class="fbtn" onclick="setBatch('advanced', this)">Advanced</button>
+  <button class="fbtn" onclick="setBatch('literary', this)">Literary</button>
+</div>
+
+<!-- Controls -->
+<div class="ctrl-row" id="ctrlRow">
+  <button class="ctrl-btn" onclick="doShuffle()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+      <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+    </svg>
+    Shuffle
+  </button>
+</div>
+
+<!-- Flashcard -->
+<div class="card-scene" id="cardScene" onclick="flipCard()">
+  <div class="card-flipper" id="flipper">
+    <!-- Front face -->
+    <div class="card-face face-front">
+      <span class="ctag" id="tagFront"></span>
+      <span class="stag" id="stagFront"></span>
+      <div class="front-word" id="frontWord"></div>
+      <div class="flip-cue">tap to reveal meaning</div>
+    </div>
+    <!-- Back face -->
+    <div class="card-face face-back">
+      <span class="ctag" id="tagBack"></span>
+      <div class="back-word" id="backWord"></div>
+      <div class="back-def" id="backDef"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mark buttons -->
+<div class="mark-row hidden" id="markRow">
+  <button class="mbtn mbtn-k" onclick="mark('known')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    Known
+  </button>
+  <button class="mbtn mbtn-l" onclick="mark('learning')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    Still Learning
+  </button>
+</div>
+
+<!-- Navigation -->
+<div class="nav-row" id="navRow">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+  <span class="card-count" id="cardNum">1 of 42</span>
+  <button class="nav-btn" id="nextBtn" onclick="go(1)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </button>
+</div>
+
+<div class="kb-hint" id="kbHint">&#8592; &#8594; to navigate &nbsp;&middot;&nbsp; Space to flip</div>
+
+<!-- Summary screen -->
+<div class="summary" id="summary">
+  <div class="sum-title">Session Complete!</div>
+  <div class="sum-sub">Here's how you did</div>
+  <div class="sum-score" id="sumScore">0%</div>
+  <div class="sum-stats">
+    <div class="sstat sstat-k">
+      <span class="sstat-n" id="sumKnown">0</span>
+      <span class="sstat-lbl">Known</span>
+    </div>
+    <div class="sstat sstat-l">
+      <span class="sstat-n" id="sumLearning">0</span>
+      <span class="sstat-lbl">Still Learning</span>
+    </div>
+  </div>
+  <div class="sum-btns">
+    <button class="sbtn sbtn-p" id="retryBtn" onclick="retryLearning()">Retry Still Learning</button>
+    <button class="sbtn sbtn-s" onclick="restartAll()">Start Over</button>
+  </div>
+</div>
+
+<script>
+  const CARDS = [
+    // Beginner
+    { w: "Storey",         d: "One floor of a building",                                  b: "beginner"     },
+    { w: "Tussle",         d: "A short rough fight or struggle",                          b: "beginner"     },
+    { w: "Simmering",      d: "Quietly growing, like anger building slowly",              b: "beginner"     },
+    { w: "Tinder",         d: "Dry material used to start a fire",                        b: "beginner"     },
+    { w: "Vaguely",        d: "In an unclear or uncertain way; slightly",                 b: "beginner"     },
+    { w: "Quenching",      d: "Satisfying a thirst or strong desire completely",          b: "beginner"     },
+    { w: "Pillage",        d: "To violently steal and destroy, especially in war",        b: "beginner"     },
+    { w: "Abreast",        d: "Side by side, or staying updated with something",          b: "beginner"     },
+    { w: "Dismayed",       d: "Feeling shocked, upset and disappointed",                  b: "beginner"     },
+    { w: "Flourish",       d: "To grow and develop strongly and successfully",            b: "beginner"     },
+    { w: "Comprehend",     d: "To fully understand something",                            b: "beginner"     },
+    // Intermediate
+    { w: "Culminate",      d: "To reach the highest or final point",                      b: "intermediate" },
+    { w: "Sophisticated",  d: "Highly developed, elegant, showing great knowledge",       b: "intermediate" },
+    { w: "Resilient",      d: "Able to recover quickly after difficult times",            b: "intermediate" },
+    { w: "Daunting",       d: "Seems very difficult and makes you nervous",               b: "intermediate" },
+    { w: "Obsolete",       d: "No longer useful; outdated",                               b: "intermediate" },
+    { w: "Pragmatic",      d: "Dealing with problems in a sensible, realistic way",       b: "intermediate" },
+    { w: "Tenacious",      d: "Never giving up",                                          b: "intermediate" },
+    { w: "Diligent",       d: "Working carefully and seriously with great effort",        b: "intermediate" },
+    { w: "Deliberate",     d: "Done on purpose with careful thought",                     b: "intermediate" },
+    { w: "Catalyst",       d: "Something that causes an important change",                b: "intermediate" },
+    { w: "Persevere",      d: "To keep trying without giving up",                         b: "intermediate" },
+    // Advanced
+    { w: "Imploded",       d: "Collapsed suddenly from within",                           b: "advanced"     },
+    { w: "Pioneered",      d: "Was the first to develop something",                       b: "advanced"     },
+    { w: "Cataclysmic",    d: "Causing sudden and terrible destruction",                  b: "advanced"     },
+    { w: "Replete",        d: "Completely full, especially with food",                    b: "advanced"     },
+    { w: "Arduous",        d: "Very difficult and tiring",                                b: "advanced"     },
+    { w: "Eloquent",       d: "Able to speak or write clearly and powerfully",            b: "advanced"     },
+    { w: "Meticulous",     d: "Paying careful attention to every detail",                 b: "advanced"     },
+    { w: "Euphoric",       d: "Feeling extremely happy and excited",                      b: "advanced"     },
+    { w: "Ambiguous",      d: "Having more than one possible meaning",                    b: "advanced"     },
+    { w: "Contemplate",    d: "To think carefully and deeply about something",            b: "advanced"     },
+    // Literary
+    { w: "Defenestration", d: "Throwing someone out of a window",                         b: "literary"     },
+    { w: "Sauntered",      d: "Walked slowly and confidently in a relaxed way",           b: "literary"     },
+    { w: "Pensive",        d: "Deeply and quietly thoughtful, often about something sad", b: "literary"     },
+    { w: "Enamoured",      d: "Deeply attracted to or in love with something",            b: "literary"     },
+    { w: "Perfunctory",    d: "Doing something quickly without care or effort",           b: "literary"     },
+    { w: "Deferential",    d: "Showing great respect to someone important",               b: "literary"     },
+    { w: "Articulate",     d: "Able to express thoughts clearly and effectively",         b: "literary"     },
+    { w: "Profound",       d: "Very deep and serious, having great meaning",              b: "literary"     },
+    { w: "Perseverance",   d: "The quality of continuing despite difficulty",             b: "literary"     },
+    { w: "Inevitable",     d: "Certain to happen; impossible to avoid",                   b: "literary"     },
+  ];
+
+  const BATCH_LABEL = {
+    beginner:     "Beginner",
+    intermediate: "Intermediate",
+    advanced:     "Advanced",
+    literary:     "Literary",
+  };
+
+  // State
+  let deck    = [...CARDS];
+  let idx     = 0;
+  let flipped = false;
+  let status  = {}; // word -> 'known' | 'learning' | null
+  CARDS.forEach(c => { status[c.w] = null; });
+
+  // ── Batch filter ──────────────────────────────────────────────
+  function setBatch(batch, btn) {
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    deck = (batch === 'all') ? [...CARDS] : CARDS.filter(c => c.b === batch);
+    idx  = 0;
+    hideSummary();
+    render();
+  }
+
+  // ── Shuffle ───────────────────────────────────────────────────
+  function doShuffle() {
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    idx = 0;
+    hideSummary();
+    render();
+  }
+
+  // ── Flip ──────────────────────────────────────────────────────
+  function flipCard() {
+    flipped = !flipped;
+    document.getElementById('flipper').classList.toggle('flipped', flipped);
+    document.getElementById('markRow').classList.toggle('hidden', !flipped);
+  }
+
+  // ── Navigate ──────────────────────────────────────────────────
+  function go(dir) {
+    const next = idx + dir;
+    if (next < 0) return;
+    if (next >= deck.length) { showSummary(); return; }
+    idx = next;
+    render();
+  }
+
+  // ── Mark card ─────────────────────────────────────────────────
+  function mark(val) {
+    status[deck[idx].w] = val;
+    updateProgress();
+    const nxt = idx + 1;
+    if (nxt >= deck.length) {
+      setTimeout(showSummary, 360);
+    } else {
+      setTimeout(() => { idx = nxt; render(); }, 300);
+    }
+  }
+
+  // ── Render current card ───────────────────────────────────────
+  function render() {
+    if (!deck.length) return;
+    const c = deck[idx];
+
+    // Reset flip state
+    flipped = false;
+    document.getElementById('flipper').classList.remove('flipped');
+    document.getElementById('markRow').classList.add('hidden');
+
+    // Front
+    document.getElementById('frontWord').textContent = c.w;
+
+    // Back
+    document.getElementById('backWord').textContent = c.w;
+    document.getElementById('backDef').textContent  = c.d;
+
+    // Batch tags on both faces
+    const lbl = BATCH_LABEL[c.b];
+    const cls = 'ctag b-' + c.b;
+    const tF  = document.getElementById('tagFront');
+    const tB  = document.getElementById('tagBack');
+    tF.className = cls; tF.textContent = lbl;
+    tB.className = cls; tB.textContent = lbl;
+
+    // Status tag (top-left of front face)
+    const st  = status[c.w];
+    const sel = document.getElementById('stagFront');
+    sel.className = 'stag'; // reset
+    if (st === 'known') {
+      sel.className   = 'stag s-known';
+      sel.textContent = '✓ Known';
+    } else if (st === 'learning') {
+      sel.className   = 'stag s-learning';
+      sel.textContent = '~ Learning';
+    }
+
+    // Counter and nav buttons
+    document.getElementById('cardNum').textContent  = `${idx + 1} of ${deck.length}`;
+    document.getElementById('prevBtn').disabled     = idx === 0;
+    document.getElementById('nextBtn').disabled     = false;
+  }
+
+  // ── Progress bar (tracks all 42 words) ───────────────────────
+  function updateProgress() {
+    const known = CARDS.filter(c => status[c.w] === 'known').length;
+    const total = CARDS.length;
+    const pct   = Math.round((known / total) * 100);
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('progText').textContent = `${known} of ${total} known`;
+    document.getElementById('progPct').textContent  = pct + '%';
+  }
+
+  // ── Summary ───────────────────────────────────────────────────
+  function showSummary() {
+    const known    = deck.filter(c => status[c.w] === 'known').length;
+    const learning = deck.filter(c => status[c.w] === 'learning').length;
+    const total    = deck.length;
+    const score    = total ? Math.round((known / total) * 100) : 0;
+
+    document.getElementById('sumScore').textContent    = score + '%';
+    document.getElementById('sumKnown').textContent    = known;
+    document.getElementById('sumLearning').textContent = learning;
+    document.getElementById('retryBtn').disabled       = learning === 0;
+
+    // Hide card UI
+    document.getElementById('cardScene').style.display = 'none';
+    document.getElementById('markRow').style.display   = 'none';
+    document.getElementById('navRow').style.display    = 'none';
+    document.getElementById('kbHint').style.display    = 'none';
+    document.getElementById('ctrlRow').style.display   = 'none';
+
+    document.getElementById('summary').classList.add('show');
+  }
+
+  function hideSummary() {
+    document.getElementById('summary').classList.remove('show');
+
+    // Restore card UI — markRow gets 'hidden' class restored by render()
+    document.getElementById('cardScene').style.display = '';
+    document.getElementById('markRow').classList.add('hidden');
+    document.getElementById('markRow').style.display   = '';
+    document.getElementById('navRow').style.display    = '';
+    document.getElementById('kbHint').style.display    = '';
+    document.getElementById('ctrlRow').style.display   = '';
+
+    render();
+  }
+
+  // ── Retry only Still Learning cards ──────────────────────────
+  function retryLearning() {
+    const still = deck.filter(c => status[c.w] === 'learning');
+    if (!still.length) return;
+    still.forEach(c => { status[c.w] = null; });
+    deck = still;
+    idx  = 0;
+    updateProgress();
+    hideSummary();
+  }
+
+  // ── Restart everything ────────────────────────────────────────
+  function restartAll() {
+    CARDS.forEach(c => { status[c.w] = null; });
+    deck = [...CARDS];
+    idx  = 0;
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+    document.querySelector('.fbtn').classList.add('on');
+    updateProgress();
+    hideSummary();
+  }
+
+  // ── Keyboard shortcuts ────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('summary').classList.contains('show')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === ' ')         { e.preventDefault(); flipCard(); }
+  });
+
+  // ── Init ──────────────────────────────────────────────────────
+  render();
+  updateProgress();
+</script>
+</body>
+</html>
