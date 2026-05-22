@@ -110,6 +110,12 @@
       transition: border-color 0.15s, color 0.15s;
     }
     .ctrl-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+    .ctrl-btn-add {
+      border-color: #bfdbfe;
+      color: #3b82f6;
+      background: #eff6ff;
+    }
+    .ctrl-btn-add:hover { background: #3b82f6; color: #fff; border-color: #3b82f6; }
 
     /* ── Card scene ── */
     .card-scene {
@@ -184,6 +190,27 @@
     }
     .s-known    { background: #dcfce7; color: #166534; display: block; }
     .s-learning { background: #fef9c3; color: #854d0e; display: block; }
+
+    /* Delete button (bottom-right of front face) */
+    .del-btn {
+      position: absolute;
+      bottom: 13px;
+      right: 13px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1.5px solid #fecaca;
+      background: #fff5f5;
+      color: #f87171;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+      opacity: 0.55;
+      z-index: 2;
+    }
+    .del-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; opacity: 1; }
 
     /* Front card content */
     .front-word {
@@ -298,71 +325,127 @@
     }
     .summary.show { display: block; }
 
-    .sum-title {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #0f2137;
-    }
-    .sum-sub {
-      font-size: 0.82rem;
-      color: #6b8fad;
-      margin-top: 4px;
-      margin-bottom: 16px;
-    }
-    .sum-score {
-      font-size: 3.8rem;
-      font-weight: 900;
-      color: #3b82f6;
-      line-height: 1;
-      margin-bottom: 24px;
-    }
-    .sum-stats {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 28px;
-    }
-    .sstat {
-      padding: 14px 18px;
-      border-radius: 14px;
-      min-width: 90px;
-    }
+    .sum-title { font-size: 1.4rem; font-weight: 800; color: #0f2137; }
+    .sum-sub { font-size: 0.82rem; color: #6b8fad; margin-top: 4px; margin-bottom: 16px; }
+    .sum-score { font-size: 3.8rem; font-weight: 900; color: #3b82f6; line-height: 1; margin-bottom: 24px; }
+    .sum-stats { display: flex; justify-content: center; gap: 18px; margin-bottom: 28px; }
+    .sstat { padding: 14px 18px; border-radius: 14px; min-width: 90px; }
     .sstat-k { background: #dcfce7; }
     .sstat-l { background: #fef9c3; }
-    .sstat-n {
-      font-size: 2rem;
-      font-weight: 800;
-      display: block;
-    }
+    .sstat-n { font-size: 2rem; font-weight: 800; display: block; }
     .sstat-k .sstat-n { color: #15803d; }
     .sstat-l .sstat-n { color: #a16207; }
-    .sstat-lbl {
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #6b8fad;
-    }
-    .sum-btns {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .sbtn {
-      padding: 11px 22px;
-      border-radius: 11px;
-      border: none;
-      font-size: 0.86rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-    }
+    .sstat-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b8fad; }
+    .sum-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .sbtn { padding: 11px 22px; border-radius: 11px; border: none; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background 0.15s, color 0.15s; }
     .sbtn-p { background: #3b82f6; color: #fff; }
     .sbtn-p:hover { background: #2563eb; }
     .sbtn-s { background: #f1f5f9; color: #6b8fad; border: 2px solid #dce6f0; }
     .sbtn-s:hover { background: #e2e8f0; }
     .sbtn:disabled { opacity: 0.4; cursor: default; }
+
+    /* ── Add Word Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 33, 55, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 12px 48px rgba(59,130,246,0.18), 0 2px 8px rgba(0,0,0,0.1);
+      transform: scale(0.96) translateY(10px);
+      transition: transform 0.22s ease;
+    }
+    .modal-overlay.open .modal-box {
+      transform: scale(1) translateY(0);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 22px 0;
+    }
+    .modal-header h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #0f2137;
+      letter-spacing: -0.02em;
+    }
+    .modal-close {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      border: none;
+      background: #f1f5f9;
+      color: #6b8fad;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .modal-close:hover { background: #e2e8f0; color: #1a2e4a; }
+    .modal-body { padding: 18px 22px 6px; }
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #6b8fad;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 5px;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 2px solid #dce6f0;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      color: #0f2137;
+      background: #fff;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .field input::placeholder { color: #b0c4d8; }
+    .field input:focus, .field select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b8fad' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+      cursor: pointer;
+    }
+    .modal-error {
+      font-size: 0.78rem;
+      color: #ef4444;
+      font-weight: 600;
+      min-height: 20px;
+      margin-bottom: 4px;
+    }
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      padding: 8px 22px 20px;
+    }
 
     /* ── Mobile ── */
     @media (max-width: 480px) {
@@ -380,7 +463,7 @@
 
 <header>
   <h1>English Flashcards</h1>
-  <p>42 vocabulary words &middot; 4 batches</p>
+  <p id="headerSub">42 vocabulary words &middot; 4 batches</p>
 </header>
 
 <!-- Progress bar -->
@@ -412,6 +495,12 @@
     </svg>
     Shuffle
   </button>
+  <button class="ctrl-btn ctrl-btn-add" onclick="openAddModal()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    Add Word
+  </button>
 </div>
 
 <!-- Flashcard -->
@@ -423,6 +512,14 @@
       <span class="stag" id="stagFront"></span>
       <div class="front-word" id="frontWord"></div>
       <div class="flip-cue">tap to reveal meaning</div>
+      <button class="del-btn" id="delBtn" onclick="deleteCard(event)" title="Remove this card">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/>
+          <path d="M9 6V4h6v2"/>
+        </svg>
+      </button>
     </div>
     <!-- Back face -->
     <div class="card-face face-back">
@@ -489,8 +586,47 @@
   </div>
 </div>
 
+<!-- Add Word Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="onOverlayClick(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <h2>Add New Word</h2>
+      <button class="modal-close" onclick="closeAddModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="inputWord">Word</label>
+        <input type="text" id="inputWord" placeholder="e.g. Ephemeral" autocomplete="off" onkeydown="onModalKey(event)">
+      </div>
+      <div class="field">
+        <label for="inputMeaning">Meaning</label>
+        <input type="text" id="inputMeaning" placeholder="e.g. Lasting for a very short time" onkeydown="onModalKey(event)">
+      </div>
+      <div class="field">
+        <label for="inputBatch">Batch</label>
+        <select id="inputBatch">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+          <option value="literary">Literary</option>
+        </select>
+      </div>
+      <div class="modal-error" id="modalError"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="sbtn sbtn-s" onclick="closeAddModal()">Cancel</button>
+      <button class="sbtn sbtn-p" onclick="submitAddWord()">Add Card</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const CARDS = [
+  // ── Built-in cards ────────────────────────────────────────────
+  const BUILT_IN = [
     // Beginner
     { w: "Storey",         d: "One floor of a building",                                  b: "beginner"     },
     { w: "Tussle",         d: "A short rough fight or struggle",                          b: "beginner"     },
@@ -540,24 +676,55 @@
   ];
 
   const BATCH_LABEL = {
-    beginner:     "Beginner",
-    intermediate: "Intermediate",
-    advanced:     "Advanced",
-    literary:     "Literary",
+    beginner: "Beginner", intermediate: "Intermediate",
+    advanced: "Advanced", literary: "Literary",
   };
 
-  // State
-  let deck    = [...CARDS];
-  let idx     = 0;
-  let flipped = false;
-  let status  = {}; // word -> 'known' | 'learning' | null
-  CARDS.forEach(c => { status[c.w] = null; });
+  // ── localStorage helpers ──────────────────────────────────────
+  function loadCustomCards() {
+    try { return JSON.parse(localStorage.getItem('fc_custom') || '[]'); }
+    catch { return []; }
+  }
+  function saveCustomCards() {
+    localStorage.setItem('fc_custom', JSON.stringify(customCards));
+  }
+  function loadDeletedWords() {
+    try { return new Set(JSON.parse(localStorage.getItem('fc_deleted') || '[]')); }
+    catch { return new Set(); }
+  }
+  function saveDeletedWords() {
+    localStorage.setItem('fc_deleted', JSON.stringify([...deletedWords]));
+  }
+
+  // ── State ─────────────────────────────────────────────────────
+  let customCards  = loadCustomCards();
+  let deletedWords = loadDeletedWords();
+  let activeBatch  = 'all';
+  let deck         = [];
+  let idx          = 0;
+  let flipped      = false;
+  let status       = {};
+
+  function getAll() {
+    return [...BUILT_IN.filter(c => !deletedWords.has(c.w)), ...customCards];
+  }
+
+  function initStatus() {
+    getAll().forEach(c => { if (!(c.w in status)) status[c.w] = null; });
+  }
+
+  // ── Header count ──────────────────────────────────────────────
+  function updateHeaderCount() {
+    const n = getAll().length;
+    document.getElementById('headerSub').textContent = `${n} vocabulary words · 4 batches`;
+  }
 
   // ── Batch filter ──────────────────────────────────────────────
   function setBatch(batch, btn) {
+    activeBatch = batch;
     document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
-    deck = (batch === 'all') ? [...CARDS] : CARDS.filter(c => c.b === batch);
+    deck = (batch === 'all') ? [...getAll()] : getAll().filter(c => c.b === batch);
     idx  = 0;
     hideSummary();
     render();
@@ -602,24 +769,56 @@
     }
   }
 
+  // ── Delete current card ───────────────────────────────────────
+  function deleteCard(event) {
+    event.stopPropagation(); // don't trigger card flip
+    const card = deck[idx];
+    const isCustom = customCards.some(c => c.w === card.w);
+    if (isCustom) {
+      customCards = customCards.filter(c => c.w !== card.w);
+      saveCustomCards();
+    } else {
+      deletedWords.add(card.w);
+      saveDeletedWords();
+    }
+    delete status[card.w];
+    deck.splice(idx, 1);
+
+    updateProgress();
+    updateHeaderCount();
+
+    if (deck.length === 0) {
+      // Rebuild from current batch filter; if still empty fall back to all
+      const rebuilt = activeBatch === 'all'
+        ? [...getAll()]
+        : getAll().filter(c => c.b === activeBatch);
+      if (rebuilt.length === 0) {
+        // Nothing left at all — show a clean empty state via summary
+        showSummary();
+      } else {
+        deck = rebuilt;
+        idx  = 0;
+        render();
+      }
+    } else {
+      if (idx >= deck.length) idx = deck.length - 1;
+      render();
+    }
+  }
+
   // ── Render current card ───────────────────────────────────────
   function render() {
     if (!deck.length) return;
     const c = deck[idx];
 
-    // Reset flip state
     flipped = false;
     document.getElementById('flipper').classList.remove('flipped');
     document.getElementById('markRow').classList.add('hidden');
 
-    // Front
     document.getElementById('frontWord').textContent = c.w;
+    document.getElementById('backWord').textContent  = c.w;
+    document.getElementById('backDef').textContent   = c.d;
 
-    // Back
-    document.getElementById('backWord').textContent = c.w;
-    document.getElementById('backDef').textContent  = c.d;
-
-    // Batch tags on both faces
     const lbl = BATCH_LABEL[c.b];
     const cls = 'ctag b-' + c.b;
     const tF  = document.getElementById('tagFront');
@@ -627,29 +826,26 @@
     tF.className = cls; tF.textContent = lbl;
     tB.className = cls; tB.textContent = lbl;
 
-    // Status tag (top-left of front face)
     const st  = status[c.w];
     const sel = document.getElementById('stagFront');
-    sel.className = 'stag'; // reset
+    sel.className = 'stag';
     if (st === 'known') {
-      sel.className   = 'stag s-known';
-      sel.textContent = '✓ Known';
+      sel.className = 'stag s-known'; sel.textContent = '✓ Known';
     } else if (st === 'learning') {
-      sel.className   = 'stag s-learning';
-      sel.textContent = '~ Learning';
+      sel.className = 'stag s-learning'; sel.textContent = '~ Learning';
     }
 
-    // Counter and nav buttons
-    document.getElementById('cardNum').textContent  = `${idx + 1} of ${deck.length}`;
-    document.getElementById('prevBtn').disabled     = idx === 0;
-    document.getElementById('nextBtn').disabled     = false;
+    document.getElementById('cardNum').textContent = `${idx + 1} of ${deck.length}`;
+    document.getElementById('prevBtn').disabled    = idx === 0;
+    document.getElementById('nextBtn').disabled    = false;
   }
 
-  // ── Progress bar (tracks all 42 words) ───────────────────────
+  // ── Progress bar (all cards) ──────────────────────────────────
   function updateProgress() {
-    const known = CARDS.filter(c => status[c.w] === 'known').length;
-    const total = CARDS.length;
-    const pct   = Math.round((known / total) * 100);
+    const all   = getAll();
+    const known = all.filter(c => status[c.w] === 'known').length;
+    const total = all.length;
+    const pct   = total ? Math.round((known / total) * 100) : 0;
     document.getElementById('progFill').style.width = pct + '%';
     document.getElementById('progText').textContent = `${known} of ${total} known`;
     document.getElementById('progPct').textContent  = pct + '%';
@@ -667,31 +863,25 @@
     document.getElementById('sumLearning').textContent = learning;
     document.getElementById('retryBtn').disabled       = learning === 0;
 
-    // Hide card UI
     document.getElementById('cardScene').style.display = 'none';
     document.getElementById('markRow').style.display   = 'none';
     document.getElementById('navRow').style.display    = 'none';
     document.getElementById('kbHint').style.display    = 'none';
     document.getElementById('ctrlRow').style.display   = 'none';
-
     document.getElementById('summary').classList.add('show');
   }
 
   function hideSummary() {
     document.getElementById('summary').classList.remove('show');
-
-    // Restore card UI — markRow gets 'hidden' class restored by render()
     document.getElementById('cardScene').style.display = '';
     document.getElementById('markRow').classList.add('hidden');
     document.getElementById('markRow').style.display   = '';
     document.getElementById('navRow').style.display    = '';
     document.getElementById('kbHint').style.display    = '';
     document.getElementById('ctrlRow').style.display   = '';
-
     render();
   }
 
-  // ── Retry only Still Learning cards ──────────────────────────
   function retryLearning() {
     const still = deck.filter(c => status[c.w] === 'learning');
     if (!still.length) return;
@@ -702,19 +892,83 @@
     hideSummary();
   }
 
-  // ── Restart everything ────────────────────────────────────────
   function restartAll() {
-    CARDS.forEach(c => { status[c.w] = null; });
-    deck = [...CARDS];
-    idx  = 0;
+    // Clear deletions so built-in cards are fully restored
+    deletedWords = new Set();
+    saveDeletedWords();
+    const all = getAll();
+    all.forEach(c => { status[c.w] = null; });
+    status = {};
+    deck   = [...all];
+    idx    = 0;
+    activeBatch = 'all';
     document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
     document.querySelector('.fbtn').classList.add('on');
     updateProgress();
+    updateHeaderCount();
     hideSummary();
+  }
+
+  // ── Add Word Modal ────────────────────────────────────────────
+  function openAddModal() {
+    document.getElementById('inputWord').value    = '';
+    document.getElementById('inputMeaning').value = '';
+    document.getElementById('inputBatch').value   = 'beginner';
+    document.getElementById('modalError').textContent = '';
+    document.getElementById('modalOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('inputWord').focus(), 50);
+  }
+
+  function closeAddModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  function onOverlayClick(event) {
+    if (event.target === document.getElementById('modalOverlay')) closeAddModal();
+  }
+
+  function onModalKey(event) {
+    if (event.key === 'Enter') submitAddWord();
+  }
+
+  function submitAddWord() {
+    const word    = document.getElementById('inputWord').value.trim();
+    const meaning = document.getElementById('inputMeaning').value.trim();
+    const batch   = document.getElementById('inputBatch').value;
+    const errEl   = document.getElementById('modalError');
+
+    if (!word)    { errEl.textContent = 'Please enter a word.'; return; }
+    if (!meaning) { errEl.textContent = 'Please enter a meaning.'; return; }
+
+    const exists = getAll().some(c => c.w.toLowerCase() === word.toLowerCase());
+    if (exists) { errEl.textContent = 'This word already exists in the deck.'; return; }
+
+    const newCard = { w: word, d: meaning, b: batch };
+    customCards.push(newCard);
+    saveCustomCards();
+    status[newCard.w] = null;
+
+    // Add to deck immediately if the active filter includes this batch
+    if (activeBatch === 'all' || activeBatch === batch) {
+      deck.push(newCard);
+      idx = deck.length - 1; // jump to the new card
+    }
+
+    updateProgress();
+    updateHeaderCount();
+    closeAddModal();
+
+    if (activeBatch === 'all' || activeBatch === batch) {
+      hideSummary(); // renders the new card
+    }
   }
 
   // ── Keyboard shortcuts ────────────────────────────────────────
   document.addEventListener('keydown', e => {
+    if (document.getElementById('modalOverlay').classList.contains('open')) {
+      if (e.key === 'Escape') closeAddModal();
+      return;
+    }
     if (document.getElementById('summary').classList.contains('show')) return;
     if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
@@ -722,6 +976,9 @@
   });
 
   // ── Init ──────────────────────────────────────────────────────
+  initStatus();
+  deck = [...getAll()];
+  updateHeaderCount();
   render();
   updateProgress();
 </script>
