@@ -18,50 +18,15 @@
       color: #1a2e4a;
     }
 
-    /* ── Header ── */
-    header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    header h1 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: #0f2137;
-      letter-spacing: -0.03em;
-    }
-    header p {
-      font-size: 0.82rem;
-      color: #6b8fad;
-      margin-top: 4px;
-    }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { font-size: 1.75rem; font-weight: 800; color: #0f2137; letter-spacing: -0.03em; }
+    header p { font-size: 0.82rem; color: #6b8fad; margin-top: 4px; }
 
     /* ── Progress bar ── */
-    .progress-wrap {
-      width: 100%;
-      max-width: 580px;
-      margin-bottom: 20px;
-    }
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: #6b8fad;
-      margin-bottom: 6px;
-    }
-    .progress-track {
-      height: 7px;
-      background: #dce6f0;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      border-radius: 99px;
-      transition: width 0.45s ease;
-      width: 0%;
-    }
+    .progress-wrap { width: 100%; max-width: 580px; margin-bottom: 20px; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 0.76rem; font-weight: 600; color: #6b8fad; margin-bottom: 6px; }
+    .progress-track { height: 7px; background: #dce6f0; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 99px; transition: width 0.45s ease; width: 0%; }
 
     /* ── Batch filter ── */
     .filter-row {
@@ -70,11 +35,11 @@
       gap: 7px;
       justify-content: center;
       width: 100%;
-      max-width: 580px;
+      max-width: 620px;
       margin-bottom: 14px;
     }
     .fbtn {
-      padding: 6px 14px;
+      padding: 6px 12px;
       border: 2px solid #dce6f0;
       background: white;
       border-radius: 99px;
@@ -85,15 +50,32 @@
       transition: border-color 0.15s, color 0.15s, background 0.15s;
       white-space: nowrap;
       line-height: 1.4;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .fbtn:hover { border-color: #3b82f6; color: #3b82f6; }
     .fbtn.on    { background: #3b82f6; border-color: #3b82f6; color: #fff; }
 
+    /* Count badge on filter buttons */
+    .fbadge {
+      display: inline-block;
+      background: rgba(107,143,173,0.2);
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 99px;
+      line-height: 1.5;
+    }
+    .fbtn.on .fbadge { background: rgba(255,255,255,0.28); }
+
     /* ── Controls row ── */
     .ctrl-row {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 16px;
+      justify-content: center;
     }
     .ctrl-btn {
       padding: 7px 15px;
@@ -107,14 +89,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
     }
     .ctrl-btn:hover { border-color: #3b82f6; color: #3b82f6; }
-    .ctrl-btn-add {
-      border-color: #bfdbfe;
-      color: #3b82f6;
-      background: #eff6ff;
-    }
+    .ctrl-btn-add { border-color: #bfdbfe; color: #3b82f6; background: #eff6ff; }
     .ctrl-btn-add:hover { background: #3b82f6; color: #fff; border-color: #3b82f6; }
 
     /* ── Card scene ── */
@@ -135,7 +113,6 @@
       transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .card-flipper.flipped { transform: rotateY(180deg); }
-
     .card-face {
       position: absolute;
       inset: 0;
@@ -163,8 +140,7 @@
     /* Batch corner tag */
     .ctag {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 14px; right: 14px;
       font-size: 0.66rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -176,12 +152,13 @@
     .b-intermediate { background: #dcfce7; color: #166534; }
     .b-advanced     { background: #ede9fe; color: #5b21b6; }
     .b-literary     { background: #fce7f3; color: #9d174d; }
+    .b-exam         { background: #ccfbf1; color: #0f766e; }
+    .b-custom       { background: #e0f2fe; color: #0369a1; }
 
-    /* Status corner tag (top-left) */
+    /* Status corner tag */
     .stag {
       position: absolute;
-      top: 14px;
-      left: 14px;
+      top: 14px; left: 14px;
       font-size: 0.66rem;
       font-weight: 700;
       padding: 3px 9px;
@@ -191,13 +168,11 @@
     .s-known    { background: #dcfce7; color: #166534; display: block; }
     .s-learning { background: #fef9c3; color: #854d0e; display: block; }
 
-    /* Delete button (bottom-right of front face) */
+    /* Delete button */
     .del-btn {
       position: absolute;
-      bottom: 13px;
-      right: 13px;
-      width: 28px;
-      height: 28px;
+      bottom: 13px; right: 13px;
+      width: 28px; height: 28px;
       border-radius: 8px;
       border: 1.5px solid #fecaca;
       background: #fff5f5;
@@ -212,7 +187,6 @@
     }
     .del-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; opacity: 1; }
 
-    /* Front card content */
     .front-word {
       font-size: clamp(2rem, 6.5vw, 3.2rem);
       font-weight: 800;
@@ -222,109 +196,30 @@
       margin-bottom: 12px;
       line-height: 1.1;
     }
-    .flip-cue {
-      font-size: 0.73rem;
-      color: #93c5fd;
-      letter-spacing: 0.02em;
-    }
-
-    /* Back card content */
-    .back-word {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #60a5fa;
-      margin-bottom: 14px;
-    }
-    .back-def {
-      font-size: clamp(0.98rem, 3.2vw, 1.22rem);
-      font-weight: 500;
-      color: #1e3a5f;
-      text-align: center;
-      line-height: 1.65;
-    }
+    .flip-cue { font-size: 0.73rem; color: #93c5fd; letter-spacing: 0.02em; }
+    .back-word { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #60a5fa; margin-bottom: 14px; }
+    .back-def { font-size: clamp(0.98rem, 3.2vw, 1.22rem); font-weight: 500; color: #1e3a5f; text-align: center; line-height: 1.65; }
 
     /* ── Mark buttons ── */
-    .mark-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-      transition: opacity 0.22s, transform 0.22s;
-    }
-    .mark-row.hidden {
-      opacity: 0;
-      transform: translateY(6px);
-      pointer-events: none;
-    }
-    .mbtn {
-      padding: 9px 21px;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.83rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      transition: background 0.16s, color 0.16s;
-    }
+    .mark-row { display: flex; gap: 12px; margin-bottom: 16px; transition: opacity 0.22s, transform 0.22s; }
+    .mark-row.hidden { opacity: 0; transform: translateY(6px); pointer-events: none; }
+    .mbtn { padding: 9px 21px; border: none; border-radius: 10px; font-size: 0.83rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background 0.16s, color 0.16s; }
     .mbtn-k { background: #dcfce7; color: #15803d; }
     .mbtn-k:hover { background: #16a34a; color: #fff; }
     .mbtn-l { background: #fef9c3; color: #a16207; }
     .mbtn-l:hover { background: #ca8a04; color: #fff; }
 
     /* ── Navigation ── */
-    .nav-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 12px;
-    }
-    .nav-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid #dce6f0;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #3b82f6;
-      flex-shrink: 0;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
-    }
+    .nav-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .nav-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #dce6f0; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #3b82f6; flex-shrink: 0; transition: background 0.15s, border-color 0.15s, color 0.15s; }
     .nav-btn:hover:not(:disabled) { background: #3b82f6; border-color: #3b82f6; color: #fff; }
     .nav-btn:disabled { opacity: 0.3; cursor: default; }
-    .card-count {
-      font-size: 0.87rem;
-      font-weight: 700;
-      color: #6b8fad;
-      min-width: 72px;
-      text-align: center;
-    }
+    .card-count { font-size: 0.87rem; font-weight: 700; color: #6b8fad; min-width: 72px; text-align: center; }
+    .kb-hint { font-size: 0.71rem; color: #93c5fd; letter-spacing: 0.03em; }
 
-    .kb-hint {
-      font-size: 0.71rem;
-      color: #93c5fd;
-      letter-spacing: 0.03em;
-    }
-
-    /* ── Summary screen ── */
-    .summary {
-      display: none;
-      width: 100%;
-      max-width: 580px;
-      background: #fff;
-      border: 2px solid #e4edf7;
-      border-radius: 20px;
-      padding: 40px 32px;
-      text-align: center;
-      box-shadow: 0 4px 22px rgba(59,130,246,0.08);
-    }
+    /* ── Summary ── */
+    .summary { display: none; width: 100%; max-width: 580px; background: #fff; border: 2px solid #e4edf7; border-radius: 20px; padding: 40px 32px; text-align: center; box-shadow: 0 4px 22px rgba(59,130,246,0.08); }
     .summary.show { display: block; }
-
     .sum-title { font-size: 1.4rem; font-weight: 800; color: #0f2137; }
     .sum-sub { font-size: 0.82rem; color: #6b8fad; margin-top: 4px; margin-bottom: 16px; }
     .sum-score { font-size: 3.8rem; font-weight: 900; color: #3b82f6; line-height: 1; margin-bottom: 24px; }
@@ -344,11 +239,11 @@
     .sbtn-s:hover { background: #e2e8f0; }
     .sbtn:disabled { opacity: 0.4; cursor: default; }
 
-    /* ── Add Word Modal ── */
+    /* ── Shared modal styles ── */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 33, 55, 0.45);
+      background: rgba(15,33,55,0.45);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -358,10 +253,7 @@
       pointer-events: none;
       transition: opacity 0.2s ease;
     }
-    .modal-overlay.open {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal-box {
       background: #fff;
       border-radius: 20px;
@@ -370,46 +262,20 @@
       box-shadow: 0 12px 48px rgba(59,130,246,0.18), 0 2px 8px rgba(0,0,0,0.1);
       transform: scale(0.96) translateY(10px);
       transition: transform 0.22s ease;
+      max-height: 90vh;
+      overflow-y: auto;
     }
-    .modal-overlay.open .modal-box {
-      transform: scale(1) translateY(0);
-    }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 22px 22px 0;
-    }
-    .modal-header h2 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #0f2137;
-      letter-spacing: -0.02em;
-    }
-    .modal-close {
-      width: 30px; height: 30px;
-      border-radius: 8px;
-      border: none;
-      background: #f1f5f9;
-      color: #6b8fad;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 22px 0; }
+    .modal-header h2 { font-size: 1.1rem; font-weight: 800; color: #0f2137; letter-spacing: -0.02em; }
+    .modal-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: #f1f5f9; color: #6b8fad; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s; flex-shrink: 0; }
     .modal-close:hover { background: #e2e8f0; color: #1a2e4a; }
     .modal-body { padding: 18px 22px 6px; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; padding: 8px 22px 20px; }
+
+    /* ── Add Word modal fields ── */
     .field { margin-bottom: 14px; }
-    .field label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #6b8fad;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 5px;
-    }
+    .field label { display: block; font-size: 0.72rem; font-weight: 700; color: #6b8fad; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
     .field input, .field select {
       width: 100%;
       padding: 9px 12px;
@@ -433,19 +299,26 @@
       padding-right: 32px;
       cursor: pointer;
     }
-    .modal-error {
-      font-size: 0.78rem;
-      color: #ef4444;
-      font-weight: 600;
-      min-height: 20px;
-      margin-bottom: 4px;
-    }
-    .modal-footer {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      padding: 8px 22px 20px;
-    }
+    .modal-error { font-size: 0.78rem; color: #ef4444; font-weight: 600; min-height: 20px; margin-bottom: 4px; }
+
+    /* New batch inline field */
+    .new-batch-field { margin-top: -6px; margin-bottom: 14px; display: none; }
+    .new-batch-field.visible { display: block; }
+    .new-batch-field input { width: 100%; padding: 9px 12px; border: 2px solid #bfdbfe; border-radius: 10px; font-size: 0.9rem; color: #0f2137; background: #eff6ff; font-family: inherit; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .new-batch-field input::placeholder { color: #93c5fd; }
+    .new-batch-field input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+    .new-batch-hint { font-size: 0.7rem; color: #60a5fa; margin-top: 4px; }
+
+    /* ── Manage modal ── */
+    .manage-note { font-size: 0.73rem; color: #93c5fd; line-height: 1.55; margin-bottom: 14px; }
+    .manage-empty { font-size: 0.85rem; color: #6b8fad; text-align: center; padding: 24px 0 8px; }
+    .manage-row { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid #f0f4f8; }
+    .manage-row:last-child { border-bottom: none; }
+    .manage-batch-info { flex: 1; min-width: 0; }
+    .manage-batch-name { display: block; font-weight: 700; font-size: 0.9rem; color: #0f2137; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .manage-batch-count { font-size: 0.72rem; color: #6b8fad; }
+    .manage-del { width: 28px; height: 28px; border-radius: 8px; border: 1.5px solid #fecaca; background: #fff5f5; color: #f87171; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+    .manage-del:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
 
     /* ── Mobile ── */
     @media (max-width: 480px) {
@@ -463,28 +336,19 @@
 
 <header>
   <h1>English Flashcards</h1>
-  <p id="headerSub">42 vocabulary words &middot; 4 batches</p>
+  <p id="headerSub">Loading…</p>
 </header>
 
-<!-- Progress bar -->
 <div class="progress-wrap">
   <div class="progress-meta">
-    <span id="progText">0 of 42 known</span>
+    <span id="progText">0 of 0 known</span>
     <span id="progPct">0%</span>
   </div>
-  <div class="progress-track">
-    <div class="progress-fill" id="progFill"></div>
-  </div>
+  <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
 </div>
 
-<!-- Batch filter -->
-<div class="filter-row">
-  <button class="fbtn on" onclick="setBatch('all', this)">All Cards</button>
-  <button class="fbtn" onclick="setBatch('beginner', this)">Beginner</button>
-  <button class="fbtn" onclick="setBatch('intermediate', this)">Intermediate</button>
-  <button class="fbtn" onclick="setBatch('advanced', this)">Advanced</button>
-  <button class="fbtn" onclick="setBatch('literary', this)">Literary</button>
-</div>
+<!-- Batch filter (rendered by JS) -->
+<div id="filterRow" class="filter-row"></div>
 
 <!-- Controls -->
 <div class="ctrl-row" id="ctrlRow">
@@ -501,27 +365,30 @@
     </svg>
     Add Word
   </button>
+  <button class="ctrl-btn" onclick="openManageModal()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="10" y2="18"/>
+    </svg>
+    Batches
+  </button>
 </div>
 
 <!-- Flashcard -->
 <div class="card-scene" id="cardScene" onclick="flipCard()">
   <div class="card-flipper" id="flipper">
-    <!-- Front face -->
     <div class="card-face face-front">
       <span class="ctag" id="tagFront"></span>
       <span class="stag" id="stagFront"></span>
       <div class="front-word" id="frontWord"></div>
       <div class="flip-cue">tap to reveal meaning</div>
-      <button class="del-btn" id="delBtn" onclick="deleteCard(event)" title="Remove this card">
+      <button class="del-btn" onclick="deleteCard(event)" title="Remove this card">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="3 6 5 6 21 6"/>
           <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-          <path d="M10 11v6"/><path d="M14 11v6"/>
-          <path d="M9 6V4h6v2"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
         </svg>
       </button>
     </div>
-    <!-- Back face -->
     <div class="card-face face-back">
       <span class="ctag" id="tagBack"></span>
       <div class="back-word" id="backWord"></div>
@@ -533,16 +400,12 @@
 <!-- Mark buttons -->
 <div class="mark-row hidden" id="markRow">
   <button class="mbtn mbtn-k" onclick="mark('known')">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     Known
   </button>
   <button class="mbtn mbtn-l" onclick="mark('learning')">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <line x1="12" y1="8" x2="12" y2="12"/>
-      <line x1="12" y1="16" x2="12.01" y2="16"/>
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
     </svg>
     Still Learning
   </button>
@@ -551,34 +414,24 @@
 <!-- Navigation -->
 <div class="nav-row" id="navRow">
   <button class="nav-btn" id="prevBtn" onclick="go(-1)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"/>
-    </svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
   </button>
-  <span class="card-count" id="cardNum">1 of 42</span>
+  <span class="card-count" id="cardNum">1 of 0</span>
   <button class="nav-btn" id="nextBtn" onclick="go(1)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="9 18 15 12 9 6"/>
-    </svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
 </div>
 
 <div class="kb-hint" id="kbHint">&#8592; &#8594; to navigate &nbsp;&middot;&nbsp; Space to flip</div>
 
-<!-- Summary screen -->
+<!-- Summary -->
 <div class="summary" id="summary">
   <div class="sum-title">Session Complete!</div>
   <div class="sum-sub">Here's how you did</div>
   <div class="sum-score" id="sumScore">0%</div>
   <div class="sum-stats">
-    <div class="sstat sstat-k">
-      <span class="sstat-n" id="sumKnown">0</span>
-      <span class="sstat-lbl">Known</span>
-    </div>
-    <div class="sstat sstat-l">
-      <span class="sstat-n" id="sumLearning">0</span>
-      <span class="sstat-lbl">Still Learning</span>
-    </div>
+    <div class="sstat sstat-k"><span class="sstat-n" id="sumKnown">0</span><span class="sstat-lbl">Known</span></div>
+    <div class="sstat sstat-l"><span class="sstat-n" id="sumLearning">0</span><span class="sstat-lbl">Still Learning</span></div>
   </div>
   <div class="sum-btns">
     <button class="sbtn sbtn-p" id="retryBtn" onclick="retryLearning()">Retry Still Learning</button>
@@ -587,35 +440,33 @@
 </div>
 
 <!-- Add Word Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="onOverlayClick(event)">
-  <div class="modal-box" id="modalBox">
+<div class="modal-overlay" id="addOverlay" onclick="onAddOverlayClick(event)">
+  <div class="modal-box">
     <div class="modal-header">
       <h2>Add New Word</h2>
       <button class="modal-close" onclick="closeAddModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="modal-body">
       <div class="field">
         <label for="inputWord">Word</label>
-        <input type="text" id="inputWord" placeholder="e.g. Ephemeral" autocomplete="off" onkeydown="onModalKey(event)">
+        <input type="text" id="inputWord" placeholder="e.g. Ephemeral" autocomplete="off" onkeydown="onAddModalKey(event)">
       </div>
       <div class="field">
         <label for="inputMeaning">Meaning</label>
-        <input type="text" id="inputMeaning" placeholder="e.g. Lasting for a very short time" onkeydown="onModalKey(event)">
+        <input type="text" id="inputMeaning" placeholder="e.g. Lasting for a very short time" onkeydown="onAddModalKey(event)">
       </div>
       <div class="field">
         <label for="inputBatch">Batch</label>
-        <select id="inputBatch">
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-          <option value="literary">Literary</option>
-        </select>
+        <select id="inputBatch" onchange="onBatchSelectChange()"></select>
       </div>
-      <div class="modal-error" id="modalError"></div>
+      <!-- Shown only when "Create New Batch" is selected -->
+      <div class="new-batch-field" id="newBatchField">
+        <input type="text" id="inputNewBatch" placeholder="New batch name, e.g. IELTS Words" maxlength="40" onkeydown="onAddModalKey(event)">
+        <div class="new-batch-hint">A new filter button will be created for this batch.</div>
+      </div>
+      <div class="modal-error" id="addError"></div>
     </div>
     <div class="modal-footer">
       <button class="sbtn sbtn-s" onclick="closeAddModal()">Cancel</button>
@@ -624,10 +475,29 @@
   </div>
 </div>
 
+<!-- Manage Batches Modal -->
+<div class="modal-overlay" id="manageOverlay" onclick="onManageOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Manage Batches</h2>
+      <button class="modal-close" onclick="closeManageModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="manage-note">Custom batches you've created are listed below. Built-in batches (Beginner, Intermediate, Advanced, Literary, Exam Words) cannot be removed.</p>
+      <div id="manageBatchList"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="sbtn sbtn-s" onclick="closeManageModal()">Done</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ── Built-in cards ────────────────────────────────────────────
   const BUILT_IN = [
-    // Beginner
+    // Beginner (11)
     { w: "Storey",         d: "One floor of a building",                                  b: "beginner"     },
     { w: "Tussle",         d: "A short rough fight or struggle",                          b: "beginner"     },
     { w: "Simmering",      d: "Quietly growing, like anger building slowly",              b: "beginner"     },
@@ -639,7 +509,7 @@
     { w: "Dismayed",       d: "Feeling shocked, upset and disappointed",                  b: "beginner"     },
     { w: "Flourish",       d: "To grow and develop strongly and successfully",            b: "beginner"     },
     { w: "Comprehend",     d: "To fully understand something",                            b: "beginner"     },
-    // Intermediate
+    // Intermediate (11)
     { w: "Culminate",      d: "To reach the highest or final point",                      b: "intermediate" },
     { w: "Sophisticated",  d: "Highly developed, elegant, showing great knowledge",       b: "intermediate" },
     { w: "Resilient",      d: "Able to recover quickly after difficult times",            b: "intermediate" },
@@ -651,7 +521,7 @@
     { w: "Deliberate",     d: "Done on purpose with careful thought",                     b: "intermediate" },
     { w: "Catalyst",       d: "Something that causes an important change",                b: "intermediate" },
     { w: "Persevere",      d: "To keep trying without giving up",                         b: "intermediate" },
-    // Advanced
+    // Advanced (10)
     { w: "Imploded",       d: "Collapsed suddenly from within",                           b: "advanced"     },
     { w: "Pioneered",      d: "Was the first to develop something",                       b: "advanced"     },
     { w: "Cataclysmic",    d: "Causing sudden and terrible destruction",                  b: "advanced"     },
@@ -662,7 +532,7 @@
     { w: "Euphoric",       d: "Feeling extremely happy and excited",                      b: "advanced"     },
     { w: "Ambiguous",      d: "Having more than one possible meaning",                    b: "advanced"     },
     { w: "Contemplate",    d: "To think carefully and deeply about something",            b: "advanced"     },
-    // Literary
+    // Literary (10)
     { w: "Defenestration", d: "Throwing someone out of a window",                         b: "literary"     },
     { w: "Sauntered",      d: "Walked slowly and confidently in a relaxed way",           b: "literary"     },
     { w: "Pensive",        d: "Deeply and quietly thoughtful, often about something sad", b: "literary"     },
@@ -673,58 +543,148 @@
     { w: "Profound",       d: "Very deep and serious, having great meaning",              b: "literary"     },
     { w: "Perseverance",   d: "The quality of continuing despite difficulty",             b: "literary"     },
     { w: "Inevitable",     d: "Certain to happen; impossible to avoid",                   b: "literary"     },
+    // Exam Words (43)
+    { w: "Philanthropy",        d: "Giving money or help to people in need for the good of society",    b: "exam" },
+    { w: "Empathy",             d: "The ability to understand and share the feelings of another person", b: "exam" },
+    { w: "Dynamic",             d: "Full of energy, always changing and progressing",                    b: "exam" },
+    { w: "Static",              d: "Not moving, not changing, staying the same",                         b: "exam" },
+    { w: "Brainstorming",       d: "A group discussion to generate new ideas freely",                    b: "exam" },
+    { w: "Inadvertently",       d: "Accidentally, without intention or planning",                        b: "exam" },
+    { w: "Credentials",         d: "Qualifications and experience that prove your abilities",            b: "exam" },
+    { w: "Tangible",            d: "Clear and definite, real and concrete, something you can see",       b: "exam" },
+    { w: "Persuade",            d: "To convince someone to do or believe something",                     b: "exam" },
+    { w: "Assertive",           d: "Expressing opinions confidently without being aggressive",           b: "exam" },
+    { w: "Chronological",       d: "Arranged in the order that events happened, earliest to latest",    b: "exam" },
+    { w: "Entrepreneurship",    d: "The activity of starting and running your own business",             b: "exam" },
+    { w: "Consensus",           d: "A general agreement reached by a group of people",                  b: "exam" },
+    { w: "Artifact",            d: "An object made by humans, usually of historical importance",         b: "exam" },
+    { w: "Predictable",         d: "Behaving in a way that is expected, easy to foresee",               b: "exam" },
+    { w: "Roadblock",           d: "Something that stops progress or prevents something from happening", b: "exam" },
+    { w: "Visionary",           d: "A person with original and ambitious ideas about the future",        b: "exam" },
+    { w: "Foresight",           d: "The ability to predict what will happen and prepare for it",         b: "exam" },
+    { w: "Opinionated",         d: "Having very strong opinions and expressing them too strongly",       b: "exam" },
+    { w: "Overwhelming",        d: "Very intense, too much to deal with, extremely large or powerful",   b: "exam" },
+    { w: "Plethora",            d: "A very large amount of something, more than enough",                 b: "exam" },
+    { w: "Cultural Competence", d: "The ability to work effectively with people from different cultures", b: "exam" },
+    { w: "Delegate",            d: "To give tasks and responsibilities to someone else",                 b: "exam" },
+    { w: "Collaborate",         d: "To work jointly with others toward a shared goal",                   b: "exam" },
+    { w: "Incentive",           d: "Something that motivates or encourages someone to do something",     b: "exam" },
+    { w: "Facilitate",          d: "To make a process or action easier or smoother",                     b: "exam" },
+    { w: "Archive",             d: "A collection of stored records, documents, or files",                b: "exam" },
+    { w: "Receptive",           d: "Willing to consider and accept new ideas and suggestions",           b: "exam" },
+    { w: "Extrovert",           d: "A person who is outgoing and gains energy from being around others", b: "exam" },
+    { w: "Concise",             d: "Expressing ideas clearly in very few words, brief but complete",     b: "exam" },
+    { w: "Profile",             d: "A brief description of a person's background, skills and qualities", b: "exam" },
+    { w: "Punctual",            d: "Arriving or doing things exactly at the right time, never late",     b: "exam" },
+    { w: "Creative",            d: "Having the ability to produce original and imaginative ideas",       b: "exam" },
+    { w: "Firm",                d: "Strong, definite, and not likely to change",                         b: "exam" },
+    { w: "Access",              d: "The ability or right to enter, use, or approach something",          b: "exam" },
+    { w: "Convey",              d: "To communicate or express a message or idea clearly",                b: "exam" },
+    { w: "Mutual",              d: "Shared equally between two or more people, felt by both sides",      b: "exam" },
+    { w: "Prone",               d: "Likely to suffer from or be affected by something",                  b: "exam" },
+    { w: "Hectic",              d: "Full of activity, very busy and rushed",                             b: "exam" },
+    { w: "Commendation",        d: "Formal praise or award given for doing something exceptionally well", b: "exam" },
+    { w: "Frills",              d: "Extra features that are not necessary, unnecessary additions",        b: "exam" },
+    { w: "Prior",               d: "Existing or coming before something else in time or order",          b: "exam" },
+    { w: "Recruiters",          d: "People whose job is to find suitable candidates for job positions",  b: "exam" },
   ];
 
-  const BATCH_LABEL = {
-    beginner: "Beginner", intermediate: "Intermediate",
-    advanced: "Advanced", literary: "Literary",
-  };
+  // Built-in batch definitions (key, display label, card tag CSS class)
+  const BUILT_IN_BATCHES = [
+    { key: "beginner",     label: "Beginner",     cls: "b-beginner"     },
+    { key: "intermediate", label: "Intermediate", cls: "b-intermediate" },
+    { key: "advanced",     label: "Advanced",     cls: "b-advanced"     },
+    { key: "literary",     label: "Literary",     cls: "b-literary"     },
+    { key: "exam",         label: "Exam Words",   cls: "b-exam"         },
+  ];
+  const BUILT_IN_KEYS = new Set(BUILT_IN_BATCHES.map(b => b.key));
 
   // ── localStorage helpers ──────────────────────────────────────
-  function loadCustomCards() {
-    try { return JSON.parse(localStorage.getItem('fc_custom') || '[]'); }
-    catch { return []; }
+  function lsGet(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key) ?? 'null') ?? fallback; }
+    catch { return fallback; }
   }
-  function saveCustomCards() {
-    localStorage.setItem('fc_custom', JSON.stringify(customCards));
-  }
-  function loadDeletedWords() {
-    try { return new Set(JSON.parse(localStorage.getItem('fc_deleted') || '[]')); }
-    catch { return new Set(); }
-  }
-  function saveDeletedWords() {
-    localStorage.setItem('fc_deleted', JSON.stringify([...deletedWords]));
-  }
+  function lsSet(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+  function loadCustomCards()   { return lsGet('fc_custom', []); }
+  function saveCustomCards()   { lsSet('fc_custom', customCards); }
+  function loadDeletedWords()  { return new Set(lsGet('fc_deleted', [])); }
+  function saveDeletedWords()  { lsSet('fc_deleted', [...deletedWords]); }
+  function loadCustomBatches() { return lsGet('fc_batches', []); }
+  function saveCustomBatches() { lsSet('fc_batches', customBatches); }
 
   // ── State ─────────────────────────────────────────────────────
-  let customCards  = loadCustomCards();
-  let deletedWords = loadDeletedWords();
-  let activeBatch  = 'all';
-  let deck         = [];
-  let idx          = 0;
-  let flipped      = false;
-  let status       = {};
+  let customCards   = loadCustomCards();
+  let deletedWords  = loadDeletedWords();
+  let customBatches = loadCustomBatches(); // [{ key, label }]
+  let activeBatch   = 'all';
+  let deck          = [];
+  let idx           = 0;
+  let flipped       = false;
+  let status        = {};
 
+  // ── Helpers ───────────────────────────────────────────────────
   function getAll() {
     return [...BUILT_IN.filter(c => !deletedWords.has(c.w)), ...customCards];
+  }
+
+  function getBatchLabel(key) {
+    const bi = BUILT_IN_BATCHES.find(b => b.key === key);
+    if (bi) return bi.label;
+    const cb = customBatches.find(b => b.key === key);
+    return cb ? cb.label : key;
+  }
+
+  function getBatchCls(key) {
+    const bi = BUILT_IN_BATCHES.find(b => b.key === key);
+    return bi ? bi.cls : 'b-custom';
+  }
+
+  function slugify(str) {
+    return 'custom-' + str.toLowerCase().trim()
+      .replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-').replace(/^-|-$/g, '');
   }
 
   function initStatus() {
     getAll().forEach(c => { if (!(c.w in status)) status[c.w] = null; });
   }
 
-  // ── Header count ──────────────────────────────────────────────
+  // ── Filter buttons (dynamic) ──────────────────────────────────
+  function renderFilterButtons() {
+    const row = document.getElementById('filterRow');
+    row.innerHTML = '';
+    const all = getAll();
+
+    function makeBtn(batchKey, label) {
+      const count = batchKey === 'all'
+        ? all.length
+        : all.filter(c => c.b === batchKey).length;
+      const btn = document.createElement('button');
+      btn.className = 'fbtn' + (activeBatch === batchKey ? ' on' : '');
+      btn.onclick = () => setBatch(batchKey, btn);
+      btn.innerHTML = `${label} <span class="fbadge">${count}</span>`;
+      return btn;
+    }
+
+    row.appendChild(makeBtn('all', 'All Cards'));
+    BUILT_IN_BATCHES.forEach(b => row.appendChild(makeBtn(b.key, b.label)));
+    customBatches.forEach(b => row.appendChild(makeBtn(b.key, b.label)));
+  }
+
   function updateHeaderCount() {
     const n = getAll().length;
-    document.getElementById('headerSub').textContent = `${n} vocabulary words · 4 batches`;
+    const batchCount = BUILT_IN_BATCHES.length + customBatches.length;
+    document.getElementById('headerSub').textContent =
+      `${n} vocabulary words · ${batchCount} batch${batchCount !== 1 ? 'es' : ''}`;
   }
 
   // ── Batch filter ──────────────────────────────────────────────
-  function setBatch(batch, btn) {
-    activeBatch = batch;
+  function setBatch(batchKey, btn) {
+    activeBatch = batchKey;
     document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
-    deck = (batch === 'all') ? [...getAll()] : getAll().filter(c => c.b === batch);
+    deck = batchKey === 'all' ? [...getAll()] : getAll().filter(c => c.b === batchKey);
     idx  = 0;
     hideSummary();
     render();
@@ -757,7 +717,7 @@
     render();
   }
 
-  // ── Mark card ─────────────────────────────────────────────────
+  // ── Mark ──────────────────────────────────────────────────────
   function mark(val) {
     status[deck[idx].w] = val;
     updateProgress();
@@ -769,12 +729,11 @@
     }
   }
 
-  // ── Delete current card ───────────────────────────────────────
+  // ── Delete card ───────────────────────────────────────────────
   function deleteCard(event) {
-    event.stopPropagation(); // don't trigger card flip
+    event.stopPropagation();
     const card = deck[idx];
-    const isCustom = customCards.some(c => c.w === card.w);
-    if (isCustom) {
+    if (customCards.some(c => c.w === card.w)) {
       customCards = customCards.filter(c => c.w !== card.w);
       saveCustomCards();
     } else {
@@ -783,34 +742,24 @@
     }
     delete status[card.w];
     deck.splice(idx, 1);
-
+    renderFilterButtons();
     updateProgress();
     updateHeaderCount();
 
     if (deck.length === 0) {
-      // Rebuild from current batch filter; if still empty fall back to all
-      const rebuilt = activeBatch === 'all'
-        ? [...getAll()]
-        : getAll().filter(c => c.b === activeBatch);
-      if (rebuilt.length === 0) {
-        // Nothing left at all — show a clean empty state via summary
-        showSummary();
-      } else {
-        deck = rebuilt;
-        idx  = 0;
-        render();
-      }
+      const rebuilt = activeBatch === 'all' ? [...getAll()] : getAll().filter(c => c.b === activeBatch);
+      if (rebuilt.length === 0) { showSummary(); return; }
+      deck = rebuilt; idx = 0;
     } else {
       if (idx >= deck.length) idx = deck.length - 1;
-      render();
     }
+    render();
   }
 
-  // ── Render current card ───────────────────────────────────────
+  // ── Render card ───────────────────────────────────────────────
   function render() {
     if (!deck.length) return;
     const c = deck[idx];
-
     flipped = false;
     document.getElementById('flipper').classList.remove('flipped');
     document.getElementById('markRow').classList.add('hidden');
@@ -819,28 +768,25 @@
     document.getElementById('backWord').textContent  = c.w;
     document.getElementById('backDef').textContent   = c.d;
 
-    const lbl = BATCH_LABEL[c.b];
-    const cls = 'ctag b-' + c.b;
-    const tF  = document.getElementById('tagFront');
-    const tB  = document.getElementById('tagBack');
+    const lbl = getBatchLabel(c.b);
+    const cls = 'ctag ' + getBatchCls(c.b);
+    const tF = document.getElementById('tagFront');
+    const tB = document.getElementById('tagBack');
     tF.className = cls; tF.textContent = lbl;
     tB.className = cls; tB.textContent = lbl;
 
     const st  = status[c.w];
     const sel = document.getElementById('stagFront');
     sel.className = 'stag';
-    if (st === 'known') {
-      sel.className = 'stag s-known'; sel.textContent = '✓ Known';
-    } else if (st === 'learning') {
-      sel.className = 'stag s-learning'; sel.textContent = '~ Learning';
-    }
+    if (st === 'known')    { sel.className = 'stag s-known';    sel.textContent = '✓ Known'; }
+    else if (st === 'learning') { sel.className = 'stag s-learning'; sel.textContent = '~ Learning'; }
 
     document.getElementById('cardNum').textContent = `${idx + 1} of ${deck.length}`;
     document.getElementById('prevBtn').disabled    = idx === 0;
     document.getElementById('nextBtn').disabled    = false;
   }
 
-  // ── Progress bar (all cards) ──────────────────────────────────
+  // ── Progress ──────────────────────────────────────────────────
   function updateProgress() {
     const all   = getAll();
     const known = all.filter(c => status[c.w] === 'known').length;
@@ -856,29 +802,22 @@
     const known    = deck.filter(c => status[c.w] === 'known').length;
     const learning = deck.filter(c => status[c.w] === 'learning').length;
     const total    = deck.length;
-    const score    = total ? Math.round((known / total) * 100) : 0;
-
-    document.getElementById('sumScore').textContent    = score + '%';
+    document.getElementById('sumScore').textContent    = (total ? Math.round((known / total) * 100) : 0) + '%';
     document.getElementById('sumKnown').textContent    = known;
     document.getElementById('sumLearning').textContent = learning;
     document.getElementById('retryBtn').disabled       = learning === 0;
-
-    document.getElementById('cardScene').style.display = 'none';
-    document.getElementById('markRow').style.display   = 'none';
-    document.getElementById('navRow').style.display    = 'none';
-    document.getElementById('kbHint').style.display    = 'none';
-    document.getElementById('ctrlRow').style.display   = 'none';
+    ['cardScene','markRow','navRow','kbHint','ctrlRow'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
     document.getElementById('summary').classList.add('show');
   }
 
   function hideSummary() {
     document.getElementById('summary').classList.remove('show');
-    document.getElementById('cardScene').style.display = '';
     document.getElementById('markRow').classList.add('hidden');
-    document.getElementById('markRow').style.display   = '';
-    document.getElementById('navRow').style.display    = '';
-    document.getElementById('kbHint').style.display    = '';
-    document.getElementById('ctrlRow').style.display   = '';
+    ['cardScene','markRow','navRow','kbHint','ctrlRow'].forEach(id => {
+      document.getElementById(id).style.display = '';
+    });
     render();
   }
 
@@ -886,86 +825,185 @@
     const still = deck.filter(c => status[c.w] === 'learning');
     if (!still.length) return;
     still.forEach(c => { status[c.w] = null; });
-    deck = still;
-    idx  = 0;
+    deck = still; idx = 0;
     updateProgress();
     hideSummary();
   }
 
   function restartAll() {
-    // Clear deletions so built-in cards are fully restored
     deletedWords = new Set();
     saveDeletedWords();
+    status = {};
     const all = getAll();
     all.forEach(c => { status[c.w] = null; });
-    status = {};
-    deck   = [...all];
-    idx    = 0;
+    deck = [...all]; idx = 0;
     activeBatch = 'all';
-    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
-    document.querySelector('.fbtn').classList.add('on');
+    renderFilterButtons();
     updateProgress();
     updateHeaderCount();
     hideSummary();
   }
 
   // ── Add Word Modal ────────────────────────────────────────────
+  function populateBatchSelect() {
+    const sel = document.getElementById('inputBatch');
+    sel.innerHTML = '';
+    BUILT_IN_BATCHES.forEach(b => {
+      sel.innerHTML += `<option value="${b.key}">${b.label}</option>`;
+    });
+    customBatches.forEach(b => {
+      sel.innerHTML += `<option value="${b.key}">${b.label}</option>`;
+    });
+    sel.innerHTML += `<option value="__new__">+ Create New Batch</option>`;
+  }
+
   function openAddModal() {
+    populateBatchSelect();
     document.getElementById('inputWord').value    = '';
     document.getElementById('inputMeaning').value = '';
-    document.getElementById('inputBatch').value   = 'beginner';
-    document.getElementById('modalError').textContent = '';
-    document.getElementById('modalOverlay').classList.add('open');
+    document.getElementById('inputNewBatch').value = '';
+    document.getElementById('newBatchField').classList.remove('visible');
+    document.getElementById('addError').textContent = '';
+    document.getElementById('addOverlay').classList.add('open');
     setTimeout(() => document.getElementById('inputWord').focus(), 50);
   }
 
   function closeAddModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
+    document.getElementById('addOverlay').classList.remove('open');
   }
 
-  function onOverlayClick(event) {
-    if (event.target === document.getElementById('modalOverlay')) closeAddModal();
+  function onAddOverlayClick(e) {
+    if (e.target === document.getElementById('addOverlay')) closeAddModal();
   }
 
-  function onModalKey(event) {
-    if (event.key === 'Enter') submitAddWord();
+  function onBatchSelectChange() {
+    const val = document.getElementById('inputBatch').value;
+    const field = document.getElementById('newBatchField');
+    field.classList.toggle('visible', val === '__new__');
+    if (val === '__new__') document.getElementById('inputNewBatch').focus();
+  }
+
+  function onAddModalKey(e) {
+    if (e.key === 'Enter') submitAddWord();
   }
 
   function submitAddWord() {
     const word    = document.getElementById('inputWord').value.trim();
     const meaning = document.getElementById('inputMeaning').value.trim();
-    const batch   = document.getElementById('inputBatch').value;
-    const errEl   = document.getElementById('modalError');
+    const errEl   = document.getElementById('addError');
+    let   batchKey = document.getElementById('inputBatch').value;
 
     if (!word)    { errEl.textContent = 'Please enter a word.'; return; }
     if (!meaning) { errEl.textContent = 'Please enter a meaning.'; return; }
 
+    // Handle new batch creation
+    if (batchKey === '__new__') {
+      const newName = document.getElementById('inputNewBatch').value.trim();
+      if (!newName) { errEl.textContent = 'Please enter a name for the new batch.'; return; }
+      const key = slugify(newName);
+      if (key === 'custom-') { errEl.textContent = 'Batch name must contain letters or numbers.'; return; }
+      const dupKey   = [...BUILT_IN_BATCHES, ...customBatches].some(b => b.key === key);
+      const dupLabel = customBatches.some(b => b.label.toLowerCase() === newName.toLowerCase());
+      if (dupKey || dupLabel) { errEl.textContent = 'A batch with this name already exists.'; return; }
+      customBatches.push({ key, label: newName });
+      saveCustomBatches();
+      batchKey = key;
+    }
+
     const exists = getAll().some(c => c.w.toLowerCase() === word.toLowerCase());
     if (exists) { errEl.textContent = 'This word already exists in the deck.'; return; }
 
-    const newCard = { w: word, d: meaning, b: batch };
+    const newCard = { w: word, d: meaning, b: batchKey };
     customCards.push(newCard);
     saveCustomCards();
     status[newCard.w] = null;
 
-    // Add to deck immediately if the active filter includes this batch
-    if (activeBatch === 'all' || activeBatch === batch) {
-      deck.push(newCard);
-      idx = deck.length - 1; // jump to the new card
-    }
-
-    updateProgress();
+    renderFilterButtons();
     updateHeaderCount();
+    updateProgress();
     closeAddModal();
 
-    if (activeBatch === 'all' || activeBatch === batch) {
-      hideSummary(); // renders the new card
+    if (activeBatch === 'all' || activeBatch === batchKey) {
+      deck.push(newCard);
+      idx = deck.length - 1;
+      hideSummary();
+    }
+  }
+
+  // ── Manage Batches Modal ──────────────────────────────────────
+  function openManageModal() {
+    renderManageBody();
+    document.getElementById('manageOverlay').classList.add('open');
+  }
+
+  function closeManageModal() {
+    document.getElementById('manageOverlay').classList.remove('open');
+  }
+
+  function onManageOverlayClick(e) {
+    if (e.target === document.getElementById('manageOverlay')) closeManageModal();
+  }
+
+  function renderManageBody() {
+    const list = document.getElementById('manageBatchList');
+    if (customBatches.length === 0) {
+      list.innerHTML = '<p class="manage-empty">No custom batches yet.<br>Use "Add Word" and select "+ Create New Batch".</p>';
+      return;
+    }
+    const all = getAll();
+    list.innerHTML = customBatches.map(b => {
+      const count = all.filter(c => c.b === b.key).length;
+      return `
+        <div class="manage-row">
+          <div class="manage-batch-info">
+            <span class="manage-batch-name">${b.label}</span>
+            <span class="manage-batch-count">${count} word${count !== 1 ? 's' : ''}</span>
+          </div>
+          <button class="manage-del" onclick="deleteCustomBatch('${b.key}')" title="Delete batch">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </div>`;
+    }).join('');
+  }
+
+  function deleteCustomBatch(key) {
+    const removedWords = new Set(customCards.filter(c => c.b === key).map(c => c.w));
+    removedWords.forEach(w => delete status[w]);
+    customCards    = customCards.filter(c => c.b !== key);
+    saveCustomCards();
+    customBatches  = customBatches.filter(b => b.key !== key);
+    saveCustomBatches();
+
+    // Remove deleted words from the live deck
+    deck = deck.filter(c => !removedWords.has(c.w));
+    if (idx >= deck.length) idx = Math.max(0, deck.length - 1);
+
+    if (activeBatch === key) {
+      activeBatch = 'all';
+      deck = [...getAll()]; idx = 0;
+    }
+
+    renderFilterButtons();
+    updateProgress();
+    updateHeaderCount();
+    renderManageBody();
+
+    if (!document.getElementById('summary').classList.contains('show') && deck.length > 0) {
+      render();
     }
   }
 
   // ── Keyboard shortcuts ────────────────────────────────────────
   document.addEventListener('keydown', e => {
-    if (document.getElementById('modalOverlay').classList.contains('open')) {
+    if (document.getElementById('manageOverlay').classList.contains('open')) {
+      if (e.key === 'Escape') closeManageModal();
+      return;
+    }
+    if (document.getElementById('addOverlay').classList.contains('open')) {
       if (e.key === 'Escape') closeAddModal();
       return;
     }
@@ -978,6 +1016,7 @@
   // ── Init ──────────────────────────────────────────────────────
   initStatus();
   deck = [...getAll()];
+  renderFilterButtons();
   updateHeaderCount();
   render();
   updateProgress();
